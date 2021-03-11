@@ -22,6 +22,7 @@ public class PeopleController {
     public String index(Model model) {
         // получим всех людей из DAO и передадим во вьюху
         model.addAttribute("people", personDAO.index());
+
         return "people/index";
     }
 
@@ -29,13 +30,23 @@ public class PeopleController {
     public String show(@PathVariable("id") int id, Model model) {
         // получим одного человека по id из DAO и передадим во вьюху
         model.addAttribute("person", personDAO.show(id));
+        
         return "people/show";
     }
 
     @GetMapping("/new")
     public String newPerson(Model model) {
+        // пакуем в модель объект нового person
         model.addAttribute("person", new Person());
 
         return "people/new";
+    }
+
+    @PostMapping()
+    public String create(@ModelAttribute("person") Person person) {
+        // добавляем person в хранилище через DAO
+        personDAO.save(person);
+
+        return "redirect:/people";
     }
 }
