@@ -35,9 +35,7 @@ public class PeopleController {
     }
 
     @GetMapping("/new")
-    public String newPerson(Model model) {
-        // пакуем в модель объект нового person
-        model.addAttribute("person", new Person());
+    public String newPerson(@ModelAttribute("person") Person person) {
 
         return "people/new";
     }
