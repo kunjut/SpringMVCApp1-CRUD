@@ -13,10 +13,10 @@ public class PersonDAO {
 
     { // блок инициализации
         people = new ArrayList<>();
-        people.add(new Person(++PEOPLE_COUNT, "Tom"));
-        people.add(new Person(++PEOPLE_COUNT, "Bob"));
-        people.add(new Person(++PEOPLE_COUNT, "Mike"));
-        people.add(new Person(++PEOPLE_COUNT, "Katy"));
+        people.add(new Person(++PEOPLE_COUNT, "Tom", "Motsky", "t.motsky@mail.com"));
+        people.add(new Person(++PEOPLE_COUNT, "Bob", "Obsky", "b.obsky@mail.com"));
+        people.add(new Person(++PEOPLE_COUNT, "Mike", "Ekimsky", "m.ekimsky@com"));
+        people.add(new Person(++PEOPLE_COUNT, "Katy", "Ytaksky", "k.ytaksky@com"));
     } // блок инициализации
 
     public List<Person> index() {
