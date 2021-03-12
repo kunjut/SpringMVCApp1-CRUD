@@ -33,4 +33,13 @@ public class PersonDAO {
         person.setId(++PEOPLE_COUNT);
         people.add(person);
     }
+
+    public void update(int id, Person updatedPerson) {
+        // получили человека, которого надо обновить
+        Person personToBeUpdated = show(id);
+        // обновляем полученными с формы данными
+        personToBeUpdated.setName(updatedPerson.getName());
+        personToBeUpdated.setSurname(updatedPerson.getSurname());
+        personToBeUpdated.setEmail(updatedPerson.getEmail());
+    }
 }
