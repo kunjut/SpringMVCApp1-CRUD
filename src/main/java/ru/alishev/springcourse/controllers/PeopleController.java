@@ -35,16 +35,24 @@ public class PeopleController {
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") Person person) {
+    public String newPerson(Person person) {
 
         return "people/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("person") Person person) {
+    public String create(Person person) {
         // добавляем person в хранилище через DAO
         personDAO.save(person);
 
         return "redirect:/people";
+    }
+
+    @GetMapping("{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        // пакуем человека по id в модель, чтобы поля формы были заполнены
+        model.addAttribute("person", personDAO.show(id));
+
+        return "people/edit";
     }
 }
