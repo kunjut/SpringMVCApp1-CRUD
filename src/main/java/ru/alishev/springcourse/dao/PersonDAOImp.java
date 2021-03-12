@@ -1,12 +1,17 @@
 package ru.alishev.springcourse.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.alishev.springcourse.models.Person;
 
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class PersonDAO {
     private static int PEOPLE_COUNT;
     private List<Person> people;
@@ -19,8 +24,16 @@ public class PersonDAO {
         people.add(new Person(++PEOPLE_COUNT, "Katy", "Ytaksky", "k.ytaksky@com"));
     } // блок инициализации
 
+    @Autowired
+    private SessionFactory sessionFactory;
+//
+//    Session session = sessionFactory.getCurrentSession();
+
+
     public List<Person> index() {
-        return people;
+        TypedQuery<Person> query=sessionFactory.getCurrentSession().createQuery("from Person");
+        return query.getResultList();
+//        return people;
     }
 
     public Person show(int id) {
