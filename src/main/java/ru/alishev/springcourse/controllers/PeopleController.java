@@ -55,4 +55,12 @@ public class PeopleController {
 
         return "people/edit";
     }
+
+    @PatchMapping("/{id}")
+    public String update(@PathVariable("id") int id, Person person) {
+        // отправляем в DAO получаенные данные чтобы обновить человека
+        personDAO.update(id, person);
+
+        return "redirect:/people";
+    }
 }
