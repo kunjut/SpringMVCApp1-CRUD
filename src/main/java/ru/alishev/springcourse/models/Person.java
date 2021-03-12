@@ -1,18 +1,25 @@
 package ru.alishev.springcourse.models;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name="people")
 public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column
     private String name;
+    @Column
     private String surname;
+    @Column
     private String email;
 
     public Person() {
     }
 
-    public Person(int id, String name, String surname, String email) {
-        this.id = id;
+    public Person(String name, String surname, String email) {
         this.name = name;
         this.surname = surname;
         this.email = email;
