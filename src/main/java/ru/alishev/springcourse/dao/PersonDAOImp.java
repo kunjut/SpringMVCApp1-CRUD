@@ -6,21 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.alishev.springcourse.models.Person;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class PersonDAOImp implements PersonDAO {
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+//    @Autowired
+//    private SessionFactory sessionFactory;
 
     @Override
     public List<Person> index() {
-        Session session = sessionFactory.getCurrentSession();
-        TypedQuery<Person> query = session
-                .createQuery("from Person");
-        return query.getResultList();
+        return entityManager.createQuery(
+                "select p from Person p", Person.class)
+                .getResultList();
+
+//        Session session = sessionFactory.getCurrentSession();
+//        TypedQuery<Person> query = session
+//                .createQuery("from Person");
+//        return query;
 
 //        так работал без бд на списке
 //        return people;
@@ -28,11 +35,15 @@ public class PersonDAOImp implements PersonDAO {
 
     @Override
     public Person show(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        TypedQuery<Person> query = session
-                .createQuery("from Person where id = :id");
+        TypedQuery<Person> query = entityManager.createQuery("select p from Person p where p.id=:id", Person.class);
         query.setParameter("id", id);
         return query.getSingleResult();
+
+//        Session session = sessionFactory.getCurrentSession();
+//        TypedQuery<Person> query = session
+//                .createQuery("from Person where id = :id");
+//        query.setParameter("id", id);
+//        return query.getSingleResult();
 
 //        так работал без бд на списке
 //        return people.stream()
@@ -42,8 +53,10 @@ public class PersonDAOImp implements PersonDAO {
 
     @Override
     public void save(Person person) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(person);
+        entityManager.persist(person);
+
+//        Session session = sessionFactory.getCurrentSession();
+//        session.save(person);
 
 //        так работал без бд на списке
 //        person.setId(++PEOPLE_COUNT);
@@ -52,12 +65,14 @@ public class PersonDAOImp implements PersonDAO {
 
     @Override
     public void update(int id, Person updatedPerson) {
-        Session session = sessionFactory.getCurrentSession();
-        Person person = show(id);
-        person.setName(updatedPerson.getName());
-        person.setSurname(updatedPerson.getSurname());
-        person.setEmail(updatedPerson.getEmail());
-        session.save(person);
+        entityManager.merge(updatedPerson);
+
+//        Session session = sessionFactory.getCurrentSession();
+//        Person person = show(id);
+//        person.setName(updatedPerson.getName());
+//        person.setSurname(updatedPerson.getSurname());
+//        person.setEmail(updatedPerson.getEmail());
+//        session.save(person);
 
 //        так работал без бд на списке
 //        // получили человека, которого надо обновить
@@ -70,11 +85,13 @@ public class PersonDAOImp implements PersonDAO {
 
     @Override
     public void delete(int id) {
-        Person person = new Person();
-        // hibernate deletes objects by the primary key
-        person.setId(id);
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(person);
+        entityManager.remove(show(id));
+
+//        Person person = new Person();
+//        // hibernate deletes objects by the primary key
+//        person.setId(id);
+//        Session session = sessionFactory.getCurrentSession();
+//        session.delete(person);
 
 //        так работал без бд на списке
 //        people.removeIf(person -> person.getId() == id);
